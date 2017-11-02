@@ -31,7 +31,7 @@ const argv =  yargs
 			});
 
 			todo.save().then((inTodo) => {
-				console.log("Created todo ", inTodo);
+				mongoose.disconnect();
 				process.exit(-1);
 			}, (err) => {
 				console.log(err);
@@ -50,7 +50,7 @@ const argv =  yargs
 
 			var todoTable = new Table({
           		head: ['ObjectID', 'Text', 'Priority'],
-	          	colWidths: [28, 15, 15],
+	          	colWidths: [30, 30, 10],
 		        style: {
 		          head: ['cyan']
 		        }
@@ -67,6 +67,7 @@ const argv =  yargs
 						console.log(chalk.yellow.bold('Nothing Here. Add a todo'));
 						console.log(chalk.yellow(' Example: todo add "make cli" 5'));
 					}
+					mongoose.disconnect();
 					process.exit(-1);
 				}, (err) => {
 					console.log(err);
@@ -81,10 +82,9 @@ const argv =  yargs
 			.help()
 			.argv
 
-			console.log("Got arguments");
-			console.log(argv);
 			Todo.remove({"_id": ObjectID(argv._[1])})
 				.then((todo) => {
+					mongoose.disconnect();
 					process.exit(-1);
 				}, (err) => {
 					console.log(err);
